@@ -21,6 +21,7 @@ public class Main {
 		session.close();
 	}
 
+	// This method runs all queries
 	private static void runQuery(Session session) {
 		
 		// local variables
