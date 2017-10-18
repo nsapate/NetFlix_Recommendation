@@ -1,0 +1,30 @@
+NetFlix Movie Prediction model via Ratings
+
+**************************************************************************
+SUMMARY
+**************************************************************************
+Netflix has come to dominate the online entertainment space. The primary reason behind their success is the ease of finding movie content online.
+ They have a huge repository of movies and other entertainment choices. Each movie is classified by their genre, ratings and even region thus,
+ making it easier for the user to decide on the movie based on their choice. We will be making use of the dataset of all the movies and ratings
+ provided by each user by developing a recommendation system to suggest similar movie choices.Our recommendation system will be employing machine
+ learning techniques to predict movies for each user based on their interests. The highest rated movie will always be displayed on the top thus,
+ making the recommendation system smart and accurate. This would in turn increase the probability of users renting or purchasing a movie.
+ This would help Netflix maintain and enhance its customer base making it a sustainable business model in the online entertainment space
+**************************************************************************
+CHANGES
+**************************************************************************
+version 0.1
+- proof of architecture
+
+**************************************************************************
+SETUP
+**************************************************************************
+1) Location of data files - src/data
+   Files
+  a.)Movies_Data.csv
+  b.)Ratings_Dataset.csv
+  
+2.Execution Steps
+  
+  a.Import Team7-Project and perform a gradle build.This creates  keyspace and tables and loads the data respectively.
+  b.Run Main class to view query output on the console.
