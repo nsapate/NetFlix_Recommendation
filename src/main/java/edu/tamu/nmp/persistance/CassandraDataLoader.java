@@ -19,17 +19,20 @@ public class CassandraDataLoader {
 	// Insert data into Movie Table
 	private static void insertMovieRecords(Session session) {
 		System.out.println("Inserting Data into Cassandra DB for Movies");
-		final String csvFile = "src/data/movie_titles.csv";
+		final String csvFile = "src/data/movie_titles1.csv";
 		BufferedReader br = null;
 		String line = "";
 		final String cvsSplit = ",";
-		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name) values (?,?,?)");
+		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name, genere1, genre2, genre3) values (?,?,?,?,?,?)");
 		BoundStatement bs;
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(cvsSplit);
-				bs = ps.bind(new Integer(values[0]),new Integer(values[1]),values[2]);
+				for(int i = 0; i<values.length; i++) {
+					values[i] = values[i].replaceAll("^\"|\"$", "");
+				}
+				bs = ps.bind(new Integer(values[0]),new Integer(values[1]),values[2],values[3] != null ? values[3] : "");
 				session.execute(bs);
 			}
 		} catch (FileNotFoundException e) {
@@ -78,6 +81,10 @@ public class CassandraDataLoader {
 		}   
 	}
 
+	private static void deleteKeySpace(Session session) {
+		String cql = "DELETE KEYSPACE NFLIX";
+	session.execute(cql);
+	}
 	// Create a keyspace
 	private static void createKeySpace(Session session) {
 		String cql = "CREATE KEYSPACE IF NOT EXISTS NFLIX "+
@@ -87,7 +94,7 @@ public class CassandraDataLoader {
 
 	// Create Movie Table
 	private static void createMovieTable(Session session) {
-		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(MOVIE_ID INT PRIMARY KEY, YEAR INT, MOVIE_NAME VARCHAR)";
+		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(MOVIE_ID INT PRIMARY KEY, YEAR INT, MOVIE_NAME VARCHAR, GENERE MAP<TEXT,TEXT>)";
 		session.execute(cql);
 	}
 
@@ -101,11 +108,12 @@ public class CassandraDataLoader {
 		CassandraConnect cc = new CassandraConnect();
 		cc.connect("localhost", 9042);
 		Session session = cc.getSession();
+		deleteKeySpace(session);
 		createKeySpace(session);
 		createMovieTable(session);
 		insertMovieRecords(session);
-		createRatingTable(session);
-	    insertRatingRecords(session);
+//		createRatingTable(session);
+//	    insertRatingRecords(session);
 		session.close();
 	}
 }

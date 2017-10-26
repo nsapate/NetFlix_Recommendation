@@ -1,7 +1,7 @@
 package edu.tamu.nmp;
 
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
+import java.util.Scanner;
+
 import com.datastax.driver.core.Session;
 
 import edu.tamu.nmp.persistance.CassandraConnect;
@@ -13,14 +13,38 @@ import edu.tamu.nmp.persistance.CassandraConnect;
  */
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("Starting Netflix recommendation system");
+	/*	System.out.println("Starting Netflix recommendation system");
 		CassandraConnect cc = new CassandraConnect();
 		cc.connect("localhost", 9042);
 		Session session = cc.getSession();
-		runQuery(session); // run all the queries
+//		runQuery(session); // run all the queries
 		session.close();
-	}
+	*/
+		 Scanner scanner = new Scanner(System.in);
 
+	        while (true) {
+
+	            System.out.print("Enter user ID : ");
+	            String input = scanner.nextLine();
+
+	            if ("q".equals(input) ) {
+	                System.out.println("Exit!");
+	                break;
+	            }
+	            else if("".equals(input)) {
+	            	System.out.println("Please enter User ID\n");
+	            	continue;
+	            }
+
+	            System.out.println("input : " + input);
+	            System.out.println("-----------\n");
+	        }
+
+	        scanner.close();
+
+	    }
+	}
+/*
 	// This method runs all queries
 	private static void runQuery(Session session) {
 		
@@ -59,5 +83,5 @@ public class Main {
 		// Clean up the connection by closing it
 		session.close();
 		
-	}
-}
+	}*/
+
