@@ -8,7 +8,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-public class MoviesDAO {
+public class UserPreferenceDAO {
 
 	private String cql = "select movie_id, rating from nflix.ratings3 where user_id=? allow filtering";
 	private String cql2 = "select movie_name,genre from nflix.movies3 where movie_id= ? allow filtering";
@@ -45,7 +45,7 @@ public class MoviesDAO {
 	}
 	
 	public static void main(String args[]) {
-		MoviesDAO mdao= new  MoviesDAO();
+		UserPreferenceDAO mdao= new  UserPreferenceDAO();
 		mdao.init();
 		List<Row> r = mdao.getPastMovieHistory("243444431");
 //		System.out.println(r.get(0).getInt("movie_id"));

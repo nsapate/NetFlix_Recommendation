@@ -23,16 +23,20 @@ public class CassandraDataLoader {
 		BufferedReader br = null;
 		String line = "";
 		final String cvsSplit = ",";
-		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name, genere1, genre2, genre3) values (?,?,?,?,?,?)");
+		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name, genre1, genre2, genre3) values (?,?,?,?,?,?)");
 		BoundStatement bs;
 		try {
+			String val = "";
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(cvsSplit);
 				for(int i = 0; i<values.length; i++) {
 					values[i] = values[i].replaceAll("^\"|\"$", "");
 				}
-				bs = ps.bind(new Integer(values[0]),new Integer(values[1]),values[2],values[3] != null ? values[3] : "");
+				if(values.length > 5) {
+					val = values[5];
+				}
+				bs = ps.bind(new Integer(values[0]),new Integer(values[1]),values[2],values[3],values[4],val);
 				session.execute(bs);
 			}
 		} catch (FileNotFoundException e) {
@@ -82,7 +86,7 @@ public class CassandraDataLoader {
 	}
 
 	private static void deleteKeySpace(Session session) {
-		String cql = "DELETE KEYSPACE NFLIX";
+	String cql = "DROP KEYSPACE NFLIX";
 	session.execute(cql);
 	}
 	// Create a keyspace
@@ -94,7 +98,7 @@ public class CassandraDataLoader {
 
 	// Create Movie Table
 	private static void createMovieTable(Session session) {
-		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(MOVIE_ID INT PRIMARY KEY, YEAR INT, MOVIE_NAME VARCHAR, GENERE MAP<TEXT,TEXT>)";
+		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(MOVIE_ID INT PRIMARY KEY, YEAR INT, MOVIE_NAME VARCHAR, GENRE1 VARCHAR, GENRE2 VARCHAR, GENRE3 VARCHAR)";
 		session.execute(cql);
 	}
 
