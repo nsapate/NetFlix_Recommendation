@@ -17,6 +17,9 @@ public class Movie {
 		this.genre2 = genre2;
 		this.genre3 = genre3;
 	}
+	public Movie() {
+		// TODO Auto-generated constructor stub
+	}
 	public long getId() {
 		return id;
 	}

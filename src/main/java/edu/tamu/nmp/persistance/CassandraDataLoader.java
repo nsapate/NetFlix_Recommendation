@@ -19,20 +19,22 @@ public class CassandraDataLoader {
 	// Insert data into Movie Table
 	private static void insertMovieRecords(Session session) {
 		System.out.println("Inserting Data into Cassandra DB for Movies");
-		final String csvFile = "src/data/movie_titles1.csv";
+		final String csvFile = "src/data/movie_titles.csv";
 		BufferedReader br = null;
 		String line = "";
 		final String cvsSplit = ",";
 		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name, genre1, genre2, genre3) values (?,?,?,?,?,?)");
 		BoundStatement bs;
 		try {
-			String val = "";
+			
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
+				String val = "";
 				String[] values = line.split(cvsSplit);
 				for(int i = 0; i<values.length; i++) {
 					values[i] = values[i].replaceAll("^\"|\"$", "");
 				}
+				
 				if(values.length > 5) {
 					val = values[5];
 				}
@@ -86,7 +88,7 @@ public class CassandraDataLoader {
 	}
 
 	private static void deleteKeySpace(Session session) {
-	String cql = "DROP KEYSPACE NFLIX";
+	String cql = "DROP KEYSPACE IF EXISTS NFLIX";
 	session.execute(cql);
 	}
 	// Create a keyspace
