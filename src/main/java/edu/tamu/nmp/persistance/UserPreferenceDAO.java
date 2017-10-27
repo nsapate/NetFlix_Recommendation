@@ -10,8 +10,8 @@ import com.datastax.driver.core.Session;
 
 public class UserPreferenceDAO {
 
-	private String cql = "select movie_id, rating from nflix.ratings3 where user_id=? allow filtering";
-	private String cql2 = "select movie_name,genre from nflix.movies3 where movie_id= ? allow filtering";
+	private String cql = "select movie_id, rating from nflix.ratings where user_id=? allow filtering";
+	private String cql2 = "select movie_name,genre1 from nflix.movies where movie_id= ? allow filtering";
 	private Session session;
 	public void init() {
 		CassandraConnect cc = new CassandraConnect();
@@ -19,7 +19,8 @@ public class UserPreferenceDAO {
 		session = cc.getSession();
 	}
 	
-	public List getPastMovieHistory(String id){
+	public void getPastMovieHistory(String id){
+		init();
 		PreparedStatement ps = session.prepare(cql);
 		BoundStatement bs = ps.bind(new Integer(id));
 		ResultSet rs = session.execute(bs);
@@ -29,8 +30,6 @@ public class UserPreferenceDAO {
 			this.printMovieDetails(new Integer(row.getInt("movie_id")));
 			System.out.println();
 		}
-		List<Row> ids = rs.all();
-		return ids;
 		
 	}
 	
@@ -40,14 +39,14 @@ public class UserPreferenceDAO {
 		ResultSet rs = session.execute(bs);
 		Row row = rs.one();
 		System.out.print("	Movie Name:  "+row.getString(0));
-		System.out.println(" 	Genre:  "+row.getString("genre"));
+		System.out.println(" 	Genre:  "+row.getString("Genre1"));
 
 	}
 	
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		UserPreferenceDAO mdao= new  UserPreferenceDAO();
 		mdao.init();
-		List<Row> r = mdao.getPastMovieHistory("243444431");
+		List<Row> r = mdao.getPastMovieHistory("123456");
 //		System.out.println(r.get(0).getInt("movie_id"));
-	}
+	}*/
 }

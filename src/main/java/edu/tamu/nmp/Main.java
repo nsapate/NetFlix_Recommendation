@@ -2,9 +2,7 @@ package edu.tamu.nmp;
 
 import java.util.Scanner;
 
-import com.datastax.driver.core.Session;
-
-import edu.tamu.nmp.persistance.CassandraConnect;
+import edu.tamu.nmp.persistance.UserPreferenceDAO;
 
 /**
  * Main Class for netflix recommendation. 
@@ -20,14 +18,14 @@ public class Main {
 //		runQuery(session); // run all the queries
 		session.close();
 	*/
-		 Scanner scanner = new Scanner(System.in);
-
-	        while (true) {
-
+		UserPreferenceDAO userPref = new UserPreferenceDAO();
+		Scanner scanner = new Scanner(System.in);
+	    while (true) {
 	            System.out.print("Enter user ID : ");
 	            String input = scanner.nextLine();
-
-	            if ("q".equals(input) ) {
+	            userPref.getPastMovieHistory(input);
+	
+	            if ("quit".equals(input) ) {
 	                System.out.println("Exit!");
 	                break;
 	            }
@@ -35,11 +33,11 @@ public class Main {
 	            	System.out.println("Please enter User ID\n");
 	            	continue;
 	            }
-
+	
 	            System.out.println("input : " + input);
 	            System.out.println("-----------\n");
-	        }
-
+	       }
+	
 	        scanner.close();
 
 	    }

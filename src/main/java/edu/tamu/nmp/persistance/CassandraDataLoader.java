@@ -23,7 +23,7 @@ public class CassandraDataLoader {
 		BufferedReader br = null;
 		String line = "";
 		final String cvsSplit = ",";
-		PreparedStatement ps = session.prepare("Insert into nflix.movies(movie_id, year, movie_name, genre1, genre2, genre3) values (?,?,?,?,?,?)");
+		PreparedStatement ps = session.prepare("Insert into nflix.movies(id, movie_id, year, movie_name, genre1, genre2, genre3) values (now(),?,?,?,?,?,?)");
 		BoundStatement bs;
 		try {
 			
@@ -46,6 +46,7 @@ public class CassandraDataLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println("Movies Data Inserted");
 			if (br != null) {
 				try {
 					br.close();
@@ -59,11 +60,11 @@ public class CassandraDataLoader {
 	// Insert Data in Records Table
 	private static void insertRatingRecords(Session session) {
 		System.out.println("Inserting Data into Cassandra DB for Ratings");
-		final String csvFile = "src/data/ratings_dataset.csv";
+		final String csvFile = "src/data/rating_final.csv";
 		BufferedReader br = null;
 		String line = "";
 		final String cvsSplit = ",";
-		PreparedStatement ps = session.prepare("Insert into nflix.ratings(movie_id, user_id, rating, date) values (?,?,?,?)");
+		PreparedStatement ps = session.prepare("Insert into nflix.ratings(id, movie_id, user_id, rating, date) values (now(),?,?,?,?)");
 		BoundStatement bs;
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
@@ -77,6 +78,7 @@ public class CassandraDataLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println("Ratings Data Inserted");
 			if (br != null) {
 				try {
 					br.close();
@@ -100,13 +102,13 @@ public class CassandraDataLoader {
 
 	// Create Movie Table
 	private static void createMovieTable(Session session) {
-		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(MOVIE_ID INT PRIMARY KEY, YEAR INT, MOVIE_NAME VARCHAR, GENRE1 VARCHAR, GENRE2 VARCHAR, GENRE3 VARCHAR)";
+		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.MOVIES(ID timeuuid, MOVIE_ID INT, YEAR INT, MOVIE_NAME VARCHAR, GENRE1 VARCHAR, GENRE2 VARCHAR, GENRE3 VARCHAR, PRIMARY KEY(ID, MOVIE_ID))";
 		session.execute(cql);
 	}
 
 	// Create Rating Table
 	private static void createRatingTable(Session session) {
-		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.RATINGS(MOVIE_ID INT, USER_ID INT PRIMARY KEY, RATING VARCHAR, DATE VARCHAR)";
+		String cql = "CREATE TABLE IF NOT EXISTS NFLIX.RATINGS(ID timeuuid, MOVIE_ID INT, USER_ID INT, RATING VARCHAR, DATE VARCHAR, PRIMARY KEY(ID, MOVIE_ID))";
 		session.execute(cql);
 	}
 
@@ -118,8 +120,8 @@ public class CassandraDataLoader {
 		createKeySpace(session);
 		createMovieTable(session);
 		insertMovieRecords(session);
-//		createRatingTable(session);
-//	    insertRatingRecords(session);
+		createRatingTable(session);
+	    insertRatingRecords(session);
 		session.close();
 	}
 }

@@ -28,7 +28,6 @@ public class MovieRecommendationDAO {
 		movies = new ArrayList<Movie>();
 		Movie mov;
 		while(!rs.isExhausted()) {
-			counter++;
 			Row row = rs.one();
 			if(row.getString("GENRE1").contains(genre) || row.getString("GENRE2").contains(genre) || row.getString("GENRE3").contains(genre)){
 				mov = new Movie();
@@ -40,8 +39,8 @@ public class MovieRecommendationDAO {
 				mov.setGenre3(row.getString("GENRE3"));
 				System.out.println();
 				movies.add(mov);
-			}
-			
+				counter++;
+			}			
 		}
 		return movies;
 	}
@@ -49,8 +48,8 @@ public class MovieRecommendationDAO {
 	public static void main(String args[]) {
 		MovieRecommendationDAO mDAO = new MovieRecommendationDAO();
 		mDAO.init();
-		List<Movie> movies = mDAO.getMoviesFromGenre("Horror");
-		System.out.println(movies.size());
+		List<Movie> movies = mDAO.getMoviesFromGenre("Thriller");
+		System.out.println(movies.size()+"|"+ counter);
 		session.close();
 	}
 }
