@@ -13,6 +13,34 @@ Netflix has come to dominate the online entertainment space. The primary reason 
 **************************************************************************
 CHANGES
 **************************************************************************
+version 0.5
+- Final Release
+- Improved our engine for more accurate genre and rating based movies recommendations
+- More accurate movie recommendations for new and existing users based on users' minimum movie rating threshold parameter
+- Expanded Genre to newer ones such as Indie Film, Short Film, SCIFI, TV etc.
+- Refactored the code for final release
+ 
+version 0.4
+- Release Candidate
+- Implemented all the changes suggested in the feedback
+- Formatted the console output for improved UX
+- Refactored the existing code
+- Removed extra comments
+
+version 0.3
+- Beta release
+- Completed secondary use case (new user registration + unique ID generation)
+- Recommendation generated based on both existing and new user inputs
+- Added new menu options to the presentation layer
+- Refactored DAO layer
+- Fixed edge cases along with few parameters checks in the presentation layer
+
+version 0.2
+- alpha release
+- completed first pass of primary use case (user watch history + recommending new movies)
+- basic recommendation feature for existing users
+- remodeled tables for faster results retrieval
+
 version 0.1
 - proof of architecture
 
@@ -21,10 +49,16 @@ SETUP
 **************************************************************************
 1) Location of data files - src/data
    Files
-  a.)Movies_Data.csv
-  b.)Ratings_Dataset.csv
+  a.)movies_titles.csv
+  b.)rating_final.csv
   
 2.Execution Steps
   
-  a.Import Team7-Project and perform a gradle build.This creates  keyspace and tables and loads the data respectively.
-  b.Run Main class to view query output on the console.
+  a.Import Team7-FinalRelease and perform a gradle build.This creates required keyspace and tables and loads the data respectively.
+  b.Running the gradle build also triggers the console application for Movie recommendation system
+
+**************************************************************************
+OTHER NOTES
+**************************************************************************
+1.When prompted for login id, Use "123456" or "56565" or the ID generated upon user registration
+2.For better results,enter the following genre- Romance,Thriller,Crime,Action,Comedy,Horror,Drama,Family
